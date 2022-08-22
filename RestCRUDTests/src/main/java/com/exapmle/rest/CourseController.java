@@ -1,7 +1,6 @@
 package com.exapmle.rest;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +20,10 @@ public class CourseController {
 	CourseService courseService;
 
 	@GetMapping("/courses")
-	public ResponseEntity<List<Course>> getAllCourses() {
+	public ResponseEntity<List<CourseDTO>> getAllCourses() {
 		try {
-			List<Course> courses = courseService.getAllCourses();
-			return ResponseEntity.ok().body(courses);
+			List<CourseDTO> courseDTOs = courseService.getAllCourses();
+			return ResponseEntity.ok().body(courseDTOs);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -32,11 +31,11 @@ public class CourseController {
 	}
 
 	@GetMapping("/id")
-	public ResponseEntity<Optional<Course>> getCourseByID(@PathVariable("id") int id) {
+	public ResponseEntity<Optional<CourseDTO>> getCourseByID(@PathVariable("id") int id) {
 
 		try {
-			Optional<Course> course = courseService.getCourseByID(id);
-			return ResponseEntity.ok().body(course);
+			Optional<CourseDTO> courseDTO = courseService.getCourseByID(id);
+			return ResponseEntity.ok().body(courseDTO);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -44,56 +43,29 @@ public class CourseController {
 	}
 
 	@PostMapping("/course")
-	public ResponseEntity<String> createCourse(@RequestBody Course course) {
-		try {
-			courseService.createCourse(course);
-			return new ResponseEntity<>("Course created sucessfully !", HttpStatus.CREATED);
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return new ResponseEntity<>("Course creation failed to insert record !", HttpStatus.UNAUTHORIZED);
-		}
+	public ResponseEntity<String> createCourse(@RequestBody CourseBO courseBO) {
+		courseService.createCourse(courseBO);
+		return new ResponseEntity<>("Course created sucessfully !" + courseBO, HttpStatus.CREATED);
 	}
 
 	@PostMapping("/courses")
-	public ResponseEntity<String> createCourse(@RequestBody List<Course> courses) {
+	public ResponseEntity<String> createCourse(@RequestBody List<CourseBO> courseBOs) {
 		try {
-			courseService.createCourses(courses);
+			courseService.createCourses(courseBOs);
 			return new ResponseEntity<>("Courses created sucessfully !", HttpStatus.CREATED);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			return new ResponseEntity<>("Course creation list failed to insert records !", HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>("CourseDTO creation list failed to insert records !", HttpStatus.UNAUTHORIZED);
 		}
 	}
 
 	@PutMapping("/course/{id}")
-	public ResponseEntity<String> updateCourse(@RequestBody Optional<Course> courseBO, @PathVariable("id") int id) {
+	public ResponseEntity<String> updateCourse(@RequestBody CourseBO courseBO, @PathVariable("id") int id) {
 		try {
-			Optional<Course> course = courseService.getCourseByID(id);
-			if (Optional.ofNullable(course) != null) {
-				course.get()
-						.setCourseName(Objects.nonNull(courseBO.get().getCourseName()) ? courseBO.get().getCourseName()
-								: course.get().getCourseName());
-				course.get()
-						.setCourseInstructor(Objects.nonNull(courseBO.get().getCourseInstructor())
-								? courseBO.get().getCourseInstructor()
-								: course.get().getCourseInstructor());
-				course.get()
-						.setCourseDescription(Objects.nonNull(courseBO.get().getCourseDescription())
-								? courseBO.get().getCourseDescription()
-								: course.get().getCourseDescription());
-				course.get()
-						.setCourseLength(!Optional.ofNullable(courseBO.get().getCourseLength()).get().equals(0)
-								? courseBO.get().getCourseLength()
-								: course.get().getCourseLength());
-
-				course.get().setRatings(Objects.nonNull(courseBO.get().getRatings()) ? courseBO.get().getRatings()
-						: course.get().getRatings());
-			}
-			courseService.createCourse(course.get());
+			courseService.updateCourses(courseBO, id);
 			return ResponseEntity.ok("Record updated sucessfully for id : " + id);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			// System.out.println(e.getMessage());
 			return new ResponseEntity<>("Cannot update Record for id : " + id, HttpStatus.NOT_FOUND);
 		}
 	}
