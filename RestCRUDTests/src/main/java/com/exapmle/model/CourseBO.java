@@ -1,4 +1,4 @@
-package com.exapmle.rest;
+package com.exapmle.model;
 
 /**
  * @author bhrigu

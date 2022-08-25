@@ -1,13 +1,16 @@
-package com.exapmle.rest;
+package com.exapmle.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author bhrigu
@@ -24,14 +27,17 @@ public class CourseDTO {
 	private String name;
 	@NotBlank(message = "Name of instructor is mandatory !")
 	private String instructor;
-	@NotBlank(message = "Course duration is mandatory to define !")
+	@NotNull(message = "Course duration is mandatory to define !")
 	private int duration;
 	@NotBlank(message = "Course category is mandatory to define !")
 	private String category;
 
 	private int ratings;
 	private String description;
-	private Date creationDate;
+
+	@javax.persistence.Temporal(TemporalType.DATE)
+	@Column(nullable = false)
+	private Date creationDate = new Date();
 
 	/**
 	 * @return the id
