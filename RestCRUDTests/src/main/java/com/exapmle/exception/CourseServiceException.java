@@ -1,9 +1,12 @@
 package com.exapmle.exception;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author bhrigu
  *
  */
+@Component
 public class CourseServiceException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

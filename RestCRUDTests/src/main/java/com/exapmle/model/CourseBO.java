@@ -1,9 +1,12 @@
 package com.exapmle.model;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author bhrigu
  *
  */
+@Component
 public class CourseBO {
 
 	private int id;

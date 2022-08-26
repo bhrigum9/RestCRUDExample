@@ -12,16 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.example.util.Utilitaries;
+import com.exapmle.dao.CourseRepository;
 import com.exapmle.exception.CourseServiceException;
 import com.exapmle.model.CourseBO;
 import com.exapmle.model.CourseDTO;
-import com.exapmle.util.Utilitaries;
 
 @Service
 public class CourseService {
 
-	@Autowired(required = true)
-	CourseRepository courseRepository;
+	@Autowired
+	private CourseRepository courseRepository;
 	@Autowired
 	private ModelMapper modelMapper;
 

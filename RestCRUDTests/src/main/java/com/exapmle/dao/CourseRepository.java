@@ -1,4 +1,4 @@
-package com.exapmle.service;
+package com.exapmle.dao;
 
 import java.util.Date;
 
